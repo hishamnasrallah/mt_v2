@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block block_title %}
+    <title>Registration</title>
+{% endblock %}
+{% block body_block %}
+{#<h1>Sign up here</h1>#}
+        {% if registered %}
+            <h2>Thank you for registering!</h2>
+        {% else %}
+            <h2 class="control-label text-info">Fill in the form</h2>
+
+            <form class="form-horizontal" enctype="multipart/form-data" method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="well col-md-6">
+                        {{ user_form|crispy }}
+                        {{ profile_form|crispy }}
+                        <div>
+                            {% for x in user_form %}
+                                {{ x.error|crispy }}
+                            {% endfor %}
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary" >Submit</button>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+
+        {% endif %}
+{% endblock %}

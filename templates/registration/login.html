@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{#{% load bootstrap4 %}#}
+{%  load staticfiles %}
+{% load crispy_forms_tags %}
+{% load labels_tag %}
+
+{% block block_title %}
+
+<title>Login</title>
+<style>
+.full-height {
+    height: 100%;
+}
+</style>
+{% endblock %}
+
+{% block body_block %}
+{#<h2 class="page-header" style="color: #64c0b6">Login Here</h2>#}
+<div class="row full-height align-items-center" style="padding-top: 5%">
+    <div class="col-md-6" id="card">
+        <div class="card card-body">
+            <img src="{% static 'img/mt-login.png'%}" alt="">
+            {% login_page_label as label %}
+            <b id="title">{{ label.label|safe }}</b>
+        </div>
+    </div>
+
+    <div class="well col-md-6 padding-left-50">
+        <form method="post">
+            {% csrf_token %}
+            {#                <h2 class="control-label text-info ">Fill out the form:</h2>#}
+            {{ form|crispy }}
+            {#                {% bootstrap_form form %}#}
+            {#                {% buttons %}#}
+            <button type="submit" name="save" class="btn loginButton">Login</button>
+            {#        //TODO:change it to main page for admin user#}
+
+            {#                    {% if not user.is_authenticated %}#}
+            {#                        <a class="btn btn-outline-dark float-right" href="{% url 'password_reset' %}">Forgot Password</a>#}
+            {#                    {% endif %}#}
+
+            {#                {% endbuttons %}#}
+        </form>
+    </div>
+</div>
+
+
+{% endblock %}

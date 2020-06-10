@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+    {% block block_title %}
+            <title>Customers</title>
+    {% endblock %}
+
+{% block body_block %}
+{#    <h2> customer info</h2>#}
+    <div class="row" style="padding-bottom: 4em">
+        <div class="col-md-12">
+            <h4 class="text-info align-right text-center">Clients</h4>
+        </div>
+
+    </div>
+
+    {% for customer in customers %}
+
+        <div class="row panel">
+            {% if customer.logo %}
+                 <div class="col-md-4">
+                     <a href="{{ MEDIA_URL }}{{ customer.logo.url }}">
+                                <img class="img-responsive img-rounded" style="height: 8em; width: 8em" src="{{ MEDIA_URL }}{{ customer.logo.url }}">
+                     </a>
+
+                 </div>
+            {% else %}
+                <div class="col-md-4">
+
+                    {% with "/static/img/ureed_logo.png" as not_found %}
+                         <img class="img-fluid img-rounded"
+                              style="height: 8em; width: 8em" src="{{ not_found }}" alt="Ureed - image not found">
+                    {% endwith %}
+
+
+                 </div>
+            {% endif %}
+
+                 <div class="col-md-3" style="padding-top: 2.5em">
+                    <h4 class="text-primary align-center"><span class="text-dark">{{ customer.name }}</span></h4>
+                 </div>
+                 <div class="col-md-3 text-right" style="padding-top: 2.5em">
+                    <a class="btn btn-warning" href="{% url 'detail_customer' pk=customer.pk %}">view</a>
+                 </div>
+                 <div class="col-md-3 text-right" style="padding-top: 2.5em">
+                    <a class="btn btn-warning" href="{% url 'add_subscription' %}">New Subscription</a>
+                 </div>
+
+        </div>
+        <hr>
+{#        <p>{{ customer.name }}</p>#}
+    {% endfor %}
+
+{#    {% for i in product %}#}
+{#        <p>hisham</p>#}
+{#        <p>{{ i.name }}</p>#}
+{#    {% endfor %}#}
+
+{% endblock %}

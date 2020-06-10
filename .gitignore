@@ -1,0 +1,13 @@
+.vscode/
+*.pyc
+*.xml
+/.vscode/
+mt_final/__pycache__/
+Global_Functions/__pycache__/
+translation/__pycache__/
+translation/templatetags/__pycache__/
+venv/
+.idea
+/media/
+__pycache__/
+

@@ -1,0 +1,96 @@
+{#{% load i18n static %}#}
+<!DOCTYPE html>
+<html lang="en" xmlns:https="http://www.w3.org/1999/xhtml">
+{% load staticfiles %}
+
+<head>
+    <meta charset="UTF-8">
+    {% block block_title %}
+        <title>Base</title>
+    {% endblock %}
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+</head>
+{#{% load i18n %}#}
+
+<body>
+
+<style>
+    .navbar-default {
+    background-color: #f8f8f8;
+    border-color: #e7e7e7;
+}
+.navbar {
+    border-radius: 4px;
+}
+.navbar {
+    position: relative;
+    min-height: 50px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-top-color: transparent;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+}
+article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary {
+    display: block;
+}
+</style>
+<nav class="navbar navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand">
+                <img src="/static/img/ureed_logo.png" alt="Ureed Logo" height=50 width="50">
+            </a>
+
+        </div>
+
+
+
+    </div>
+</nav>
+<div class="container">
+
+        <div class="jumbotron">
+            {% block body_block %}
+
+
+            {% endblock %}
+        </div>
+    </div>
+
+
+{# fooooter#}
+</body>
+{#{% if appearance.footer %}#}
+<!-- Footer -->
+<style>
+        .footer {
+        background: rgba(48, 116, 162, .3);
+        position: absolute;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        padding: 10px;
+    }
+
+    .footer img {
+        width: 150px
+    }
+</style>
+<div class="footer">
+    <div class="container text-right">
+        <strong>Powered by</strong>
+        <img src="/static/img/ureed.png" alt="Ureed Logo">
+    </div>
+</div>
+  <!-- Footer -->
+{#{% endif %}#}
+</html>

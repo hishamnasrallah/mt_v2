@@ -1,0 +1,465 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block js %}
+    <script src="https://js.pusher.com/5.0/pusher.min.js"></script>
+
+    <script>
+
+        // Enable pusher logging - don't include this in production
+        Pusher.logToConsole = true;
+
+        var pusher = new Pusher('6891290613c25dda3ef1', {
+            cluster: 'mt1',
+            forceTLS: true
+        });
+
+        var user_id = {{ user.id }};
+        var channel = pusher.subscribe('my-channel-'+user_id.toString());
+        channel.bind('my-event', function (data) {
+            alert(JSON.stringify(data));
+        });
+    </script>
+
+{% endblock %}
+{% block body_block %}
+    {% load labels_tag %}
+    {% block loader %}
+        <div id="loader_container">
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog text-center" role="document">
+                    <div style="display:inline-block; margin-top: 50%">
+                        <div class="loader" style="display: block;" id="loader1"></div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        </div>
+    {% endblock %}
+
+    <style>
+
+        .left-text {
+            text-align: left;
+        }
+
+        #card-trans {
+            border: 1px solid rgba(0, 0, 0, .125);
+            border-radius: .25rem;
+        }
+
+        .card-header {
+            background: transparent !important;
+            padding: 0.75rem 1.25rem 0;
+        }
+
+        .language-from {
+            color: #0ad0ba;
+            float: left;
+            border-bottom: 2px solid #0ad0ba;
+            padding-bottom: 5px;
+        }
+
+        .loader {
+            display: none;
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #3498db;
+            width: 120px;
+            height: 120px;
+            -webkit-animation: spin 2s linear infinite; /* Safari */
+            animation: spin 2s linear infinite;
+        }
+
+        /* Safari */
+        @-webkit-keyframes spin {
+            0% {
+                -webkit-transform: rotate(0deg);
+            }
+            100% {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+    <p>Languages</p>
+<select class="browser-default custom-select" id="trans_target">
+  <option selected value="en">English/Arabic</option>
+  <option value="ar">Arabic/English</option>
+</select>
+    <br/>
+    <br/>
+    <br/>
+    <form class="form-ureed-translate" onsubmit="return false" name="myForm">
+
+        <div class="card" id="card-trans">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col">
+                        <span class="language-from"
+                              style="color: {{ general_color }}; border-bottom: 2px solid {{ general_color }};">Source</span>
+                    </div>
+                    <div class="col">
+                        <span class="language-from"
+                              style="color: {{ general_color }}; border-bottom: 2px solid {{ general_color }};">Target</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body padding-0">
+                {% csrf_token %}
+
+                <div class="row">
+                    <div class="col-md-6 textarea-block">
+                        <textarea class="form-control textarea-from" rows="6"
+                                  maxlength="5000" name="to_translate" id="translate">{{ to_translate }}</textarea>
+                        <span class="count">
+                        <span class="number">0</span> / 5000
+                    </span>
+                    </div>
+                    <div class="col-md-6">
+
+                        <div class="position-relative">
+                            <div class="overlay-textarea"></div>
+                            <textarea class="form-control text-area" id="copied-text" dir="rtl"
+                                      rows="6" readonly>{{ translated }}</textarea>
+                        </div>
+                        <span class="clone-ureed">
+                        <i class="fa fa-clone" aria-hidden="true" onclick="copyText()" onmouseout="outFunc()"></i>
+                        <span class="tooltiptext" id="myTooltip">Copy to clipboard</span>
+                    </span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <button onclick="showDiv()" type="submit" id="translate" class="btn btn-translate-ureed" value="Next"
+                name="Next"
+                style="color: {{ button_text_color }}; background-color: {{ general_color }}">Translate
+        </button>
+        <div style="float: right">
+{#            TODO: remove the follwoing comment when upload is ready #}
+            <label for="file_en" style="cursor:pointer">
+
+                <span><i class="fa fa-upload" aria-hidden="false"></i></span>
+            </label>
+            <button type="submit" form="data" onclick="uploadFileToTranslate()" id="translate_file_en"
+                    class="btn btn-translate-ureed"
+                    style="color: {{ button_text_color }}; background-color: {{ general_color }}">Translate File
+            </button>
+        </div>
+    </form>
+    <form method="post" id="data" onsubmit="return false" enctype="multipart/form-data" style="display: inline-block">
+        {% csrf_token %}
+{#        <div style="float: right">#}
+{#            <label for="file_en" style="cursor:pointer">#}
+{##}
+{#                <span><i class="fa fa-upload" aria-hidden="false"></i></span>#}
+{#            </label>#}
+{#            <button type="submit" form="data" onclick="uploadFileToTranslate()" id="translate_file_en"#}
+{#                    class="btn btn-translate-ureed"#}
+{#                    style="color: {{ button_text_color }}; background-color: {{ general_color }}">Translate File#}
+{#            </button>#}
+{#        </div>#}
+
+        <input type="file" id="file_en" name="file_en" required="required" multiple style="display: none">
+
+{#                        <input type="file" id="file_en" name="file_en" required="required" multiple >#}
+{##}
+{#                <button type="submit" onclick="uploadFileToTranslate()" id="translate_file_en" class="btn btn-translate-ureed"#}
+{#                        style="color: {{ button_text_color }}; background-color: {{ general_color }}">Translate File#}
+{#                </button>#}
+    </form>
+
+    <div class="card-ureed-footer">
+        <div class="row">
+            <div class="col-md-6 ureed-data">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <ul class="list-unstyled" id="word">
+                                    <!-- {% for word, values in POS.items %}
+                                        <li>
+                                            <span class="word"> {{ word }} </span> (<span
+                                                class="green-font">{{ values.0 }}</span>) : {{ values.1 }}
+                                        </li>
+                                    {% endfor %} -->
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <!-- {% translation_page_label as label %}
+                            {{ label.label|safe }} -->
+                                <!-- <img src="{% static 'img/ureed-translate.png' %}" alt=""> -->
+                                <div class="row">
+                                    <div class="col-8">
+                                        <p><b>If you faced any issues or have any suggestions, please contact us at <a
+                                                href="mailto: mt.support@tarjama.com">mt.support@tarjama.com</a></b></p>
+                                    </div>
+                                    <div class="col-4" style="padding-top: 4%;">
+                                        <button class="btn" id="support"
+                                                onclick="window.location.href='mailto: mt.support@tarjama.com';"><i
+                                                class="fa fa-envelope"></i> Email Support
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row saved-button-ureed">
+        <div class="col-12 text-center">
+            <button class="btn btn-transparent btn-saved"><i class="fa fa-history"></i> History</button>
+            <button  class="btn btn-transparent btn-files"><i class="fa fa-upload"></i> Uploaded files</button>
+        </div>
+    </div>
+    <br>
+    <div class="sidebar">
+        <div class="overlay"></div>
+        <div class="sidebar-content">
+            <div class="title">
+                History <i class="fa fa-history float-right"></i>
+            </div>
+            <div class="content">
+                <ul class="list-unstyled">
+
+                    {% for i in translation_history %}
+                        <li>
+                            <div title='{{ i.to_translate }} : {{ i.translated }}'>
+                                <span class="clone-ureed ">
+                                <i class="fa fa-clone" aria-hidden="true"
+                                   data-trans='{{ i.translated }}' onclick="copyTranslated(this)" id="copy"
+                                   onmouseout="outFunc()"></i>
+                                <span class="mtooltiptext" id="tooltip">Copy to clipboard</span>
+                                </span>
+                                {{ i.to_translate|slice:"0 : 100" }}
+
+                                {% if i.to_translate|length >= 120 %}
+                                    <span>...</span>
+                                {% endif %}
+                                <hr>
+                            </div>
+
+
+                            <!-- <span> {{ i.to_translate }} </span> -->
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="sidebarfiles">
+        <div class="overlay"></div>
+        <div class="sidebarfiles-content">
+            <div class="title">
+                Uploaded Files History <i class="fa fa-upload float-right"></i>
+            </div>
+            <div class="content">
+                <ul class="list-unstyled">
+
+                    {% for i in files_history %}
+                        <li>
+                            <div title='{{ i.file_en.name|slice:"17: 550000" }}'>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        {% if i.status == 'in_progress' %}
+                                            <div class="fa fa-clock-o"></div>
+                                        {% else %}
+                                            <a href="{{ i.file_en.url }}" class="fa fa-download"></a>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-md-10">
+                                        {{ i.file_en.name|slice:"17 : 50" }}
+                                        {% if i.file_en.name|length >= 50 %}
+                                            <span>...</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+
+
+        function uploadFileToTranslate() {
+            console.log(document.getElementById("data"));
+            var form_data = new FormData(document.getElementById("data"));
+            {#console.log(form_data);#}
+
+            var file = document.getElementById("file_en");
+            {#console.log(file);#}
+            $.ajax({
+                url: "{% url 'create-file-translation' slug=slug %}",
+                type: 'POST',
+                data: form_data,
+                success: function (data) {
+                    console.log(data);
+                    console.log(file);
+
+                    alert('File successfully uploaded');
+                    file.value = ''
+
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+
+        };
+    </script>
+
+    <script>
+        $(function () {
+            $(".form-ureed-translate .textarea-block .count .number").text($(".textarea-from").val().length);
+            $('.btn-saved').on('click', function () {
+                $('.sidebar').addClass('open');
+            });
+            $('.btn-files').on('click', function () {
+                $('.sidebarfiles ').addClass('open');
+            });
+            $('.sidebar .overlay').on('click', function () {
+                $('.sidebar').removeClass('open');
+            });
+            $('.sidebarfiles .overlay').on('click', function () {
+                $('.sidebarfiles').removeClass('open');
+            });
+            $(".textarea-from").keyup(function () {
+                $(".form-ureed-translate .textarea-block .count .number").text($(this).val().length);
+                if ($(this).val().trim() == '') {
+                    $('.form-ureed-translate #copied-text').val('');
+                }
+            });
+            {#$(".textarea-from").change(function () {#}
+            {#    if ($(this).val() == '')#}
+            {#        $('.form-ureed-translate #copied-text').val('');#}
+            {# });#}
+        });
+
+        function copyText() {
+            var copyText = document.getElementById("copied-text");
+            copyText.select();
+            document.execCommand("copy");
+
+            var tooltip = document.getElementById("myTooltip");
+            tooltip.innerHTML = "Copied ";
+        }
+
+        function copyTranslated(elem) {
+            var data = $(elem).data('trans')
+            const ele = document.createElement('textarea');
+            ele.value = data;
+            ele.setAttribute('readonly', true)
+            // Following styling is to avoid flashing textarea on screen
+            ele.style.position = 'absolute';
+            ele.style.padding = 0;
+            ele.style.background = 'transparent';
+            ele.style.outline = 'none';
+            ele.style.left = '-100%';
+            document.body.appendChild(ele);
+            ele.select();
+            document.execCommand('copy');
+
+            var mtooltip = document.getElementById("tooltip");
+            mtooltip.innerHTML = "Copied!";
+
+            document.body.removeChild(ele);
+            // document.getEle mentById('copy').addEventListener('click', e => copyToClipboard(data))
+        }
+
+        function outFunc() {
+            var tooltip = document.getElementById("myTooltip");
+            tooltip.innerHTML = "Copy to clipboard";
+
+            var mtooltip = document.getElementById("tooltip");
+            mtooltip.innerHTML = "Copy to clipboard";
+        }
+
+        function showDiv() {
+            // {#document.getElementById('translate').style.display = "none";#}
+            {#document.getElementById('loader1').style.display = "block";#}
+            $('#exampleModal').modal('show');
+            // {#setTimeout(function () {#}
+            // {#    }, 2000);#}
+            var trans = $('#translate').val();
+            var trans_traget = $('#trans_target').val();
+            {#console.log(trans_traget)#}
+            var crf = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+            $('#word').empty();
+
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'words-translation' %}",
+                data: {enu_text: trans, csrfmiddlewaretoken: crf, source: trans_traget, slug: '{{ slug }}', user_id: '{{ user.id }}'},
+                dataType: "json",
+                success: function (resultData) {
+                    // console.log(res,'re here');
+
+                    var x = $('#word')
+                    for (var i in resultData.translation) {
+                        x.append('<li><span class="word">' + i + '</span> ( <span class="green-font">' + resultData.translation[i][0] + ' </span>) : ' + resultData.translation[i][1] + '</li>')
+                    }
+                }
+            });
+
+            {#$.ajax({#}
+            {#    type: 'POST',#}
+            {#    url: "{% url 'mt-sentence' %}",#}
+            {#    data: {enu_text: trans, csrfmiddlewaretoken: crf, slug: '{{ slug }}', user_id: '{{ user.id }}'},#}
+            {#    dataType: "json",#}
+            {#    success: function (resultData) {#}
+            {#        $('#copied-text').val(resultData.translated);#}
+            {##}
+            {#        $('#exampleModal').modal('hide');#}
+            {#        $('#exampleModal').modal('hide');#}
+            {#    }#}
+            {# });#}
+
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'mt-sentence' %}",
+                data: {inputText: trans, csrfmiddlewaretoken: crf, source: trans_traget, slug: '{{ slug }}', user_id: '{{ user.id }}'},
+                dataType: "json",
+                success: function (resultData) {
+                    $('#copied-text').val(resultData.translatedText);
+
+                    $('#exampleModal').modal('hide');
+                    $('#exampleModal').modal('hide');
+                }
+            });
+        }
+    </script>
+
+
+{% endblock %}

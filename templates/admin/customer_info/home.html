@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+
+{#{% load bootstrap4 %}#}
+{% load staticfiles %}
+{% block block_title %}
+    <title>Home Page</title>
+
+{% endblock %}
+
+
+
+
+
+{% block above_container %}
+{#<h5 class="text-info"> Welcome : <span class="text-dark">{{ user.first_name }}</span></h5>#}
+{% endblock %}
+{% block body_block %}
+{#                 <div class="col-md-4 text-right" style="padding-top: 2.5em">#}
+
+{#                 </div>#}
+{#    <button type="link" class="btn btn-success">Create New Client</button>#}
+
+{#    <button type="button" class="btn btn-primary"><a class="btn btn-warning" href="{% url 'main_view' %}">All Clients</a></button>#}
+<a class="btn btn-success" href="{% url 'signup' %}">Create New User</a>
+<a class="btn btn-success" href="{% url 'create_customer' %}">Create New Demo Client</a>
+<a class="btn btn-info" href="{% url 'translation_list' %}">Translation history</a>
+<a class="btn btn-info" href="{% url 'add_subscription' %}">New Subscription</a>
+
+    <hr style="border-top: 1px solid #8c8b8b;">
+<div class="row" style="justify-content:center;" > <h3>Clients </h3></div>
+
+<table class="table table-hover">
+<thead>
+<tr>
+<th>Logo</th>
+<th>Name</th>
+<th>Is Active</th>
+<th>Type</th>
+<th>Main Account</th>
+</tr>
+</thead>
+
+<tbody>
+{% for client in customer %}
+        <tr>
+
+    {% if client.logo %}
+
+             <td class="col-sm-2">
+
+                <a href="{{ MEDIA_URL }}{{ client.logo.url }}">
+                    <img class="img-thumbnail rounded" style="width:2.5em; height: 2.5em" src="{{ MEDIA_URL }}{{ client.logo.url }}">
+                </a>
+         </td>
+     {% else %}
+         <td>
+            {% with "/static/img/ureed_logo.png" as not_found %}
+                 <img class="img-thumbnail rounded"
+                      style="width:2.5em; height: 2.5em" src="{{ not_found }}" alt="Ureed - image not found">
+            {% endwith %}
+         </td>
+    {% endif %}
+
+        <td class="col-sm-3">{{ client.name }}</td>
+
+        <td class="col-sm-3">
+        {% if client.active_ind %}
+            {% with "/img/true.png" as active %}
+                 <img class="img-thumbnail rounded"
+                      style="width:2.5em; height: 2.5em" src="{% static active %}" alt="Ureed - image not found">
+            {% endwith %}
+        {% elif not client.active_ind %}
+            {% with "/img/false.png" as inactive %}
+                 <img class="img-thumbnail rounded"
+                      style="width:2.5em; height: 2.5em" src="{% static inactive %}" alt="Ureed - image not found">
+            {% endwith %}
+        {% endif %}
+        </td>
+        <td class="col-sm-3">{{ client.get_customer_type_display }}</td>
+        <td class="col-sm-3">{{ client.user }}</td>
+        <td class="col-sm-2"><a class="btn btn-warning" href="{% url 'detail_customer' pk=client.id %}">View</a></td>
+{#        <td class="col-sm-2"><a class="btn btn-warning" href="{% url 'edit_customer' pk=client.id %}">Edit</a></td>#}
+
+        <td class="col-sm-2"><a class="btn btn-danger" href="{% url 'delete-customer' pk=client.id %}">Delete</a></td>
+
+    </tr>
+{% endfor %}
+
+
+</tbody>
+</table>
+<nav>
+
+    {% if customer.has_other_pages %}
+  <ul class="pagination">
+    {% if customer.has_previous %}
+      <li class="page-item"><a class="page-link" aria-label="Previous" href="?page={{ customer.previous_page_number }}">&laquo;</a></li>
+
+    {% endif %}
+    {% for i in customer.paginator.page_range %}
+      {% if customer.number == i %}
+        <li class="active page-item"><span class="page-link">{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if customer.has_next %}
+
+      <li class="page-item">
+          <a class="page-link" aria-label="Next" href="?page={{ customer.next_page_number }}">
+          <span>&raquo;</span>
+        </a></li>
+    {% else %}
+{#      <li class="disabled">#}
+{#        <span aria-hidden="true">&raquo;</span>#}
+{#      </li>#}
+    {% endif %}
+  </ul>
+
+</nav>
+{% endif %}
+<a class="btn btn-warning" href="{% url 'main_view' %}">All Clients</a>
+{#<button type="button" class="btn btn-secondary">Secondary</button>#}
+{#<button type="button" class="btn btn-danger">Danger</button>#}
+{#<button type="button" class="btn btn-warning">Warning</button>#}
+{#<button type="button" class="btn btn-info">Info</button>#}
+{#<button type="button" class="btn btn-light">Light</button>#}
+{#<button type="button" class="btn btn-dark">Dark</button>#}
+
+{#<button type="button" class="btn btn-link">Link</button>#}
+
+{% endblock %}

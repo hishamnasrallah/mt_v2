@@ -1,0 +1,27 @@
+version: 0.0
+os: linux
+files:
+  - source: codedeploy/keys/hishamapp5
+    destination: /home/ubuntu/.ssh/
+    
+permissions:
+  - object: /home/ubuntu/.ssh/hishamapp5
+    owner: ubuntu
+    group: ubuntu
+    mode: 400
+    type:
+      - file
+hooks:
+  ApplicationStop:
+    - location: codedeploy/scripts/stop-services.sh
+      timeout: 1200
+      runas: ubuntu
+  AfterInstall:
+    - location: codedeploy/scripts/deploy.sh
+      timeout: 1200
+      runas: ubuntu
+  ApplicationStart:
+    - location: codedeploy/scripts/start-services.sh
+      timeout: 180
+      runas: ubuntu
+

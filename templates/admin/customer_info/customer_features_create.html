@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{#{% load bootstrap4 %}#}
+{% load crispy_forms_tags %}
+
+{% block block_title %}
+    <title>Create new customer</title>
+{% endblock %}
+{% block above_container %}
+{#<h5 class="text-info"> Welcome : <span class="text-dark">{{ user.first_name }}</span></h5>#}
+{% endblock %}
+{% block body_block %}
+
+<form enctype="multipart/form-data" method="post">
+    {% csrf_token %}
+{#    {{ add_features|crispy }}#}
+
+
+    {{ add_features.upload_to_translate_ind|as_crispy_field }}
+    {{ add_features.copy_translated_text_ind|as_crispy_field }}
+{#    {% bootstrap_form add_customer %}#}
+{#        {{ add_product|crispy }}#}
+{#    {% buttons %}#}
+
+        <button type="submit" name="save" class="btn btn-success">Save</button>
+        <button type="reset" name="reset" class="btn btn-info">Reset</button>
+{#        //TODO:change it to main page for admin user#}
+
+        <a class="btn btn-danger" href="{% url 'home-staff' %}">Cancel</a>
+{#        <button type="button" name="cancel" class="btn btn-danger">Cancel</button>#}
+{#        {% buttons reset="Cancel" %}{% endbuttons %}#}
+{#    {% endbuttons %}#}
+</form>
+
+{% endblock %}

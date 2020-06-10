@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{#{% load bootstrap4 %}#}
+{% load crispy_forms_tags %}
+
+{% block block_title %}
+    <title>Create new customer</title>
+{% endblock %}
+{% block above_container %}
+{#<h5 class="text-info"> Welcome : <span class="text-dark">{{ user.first_name }}</span></h5>#}
+{% endblock %}
+{% block body_block %}
+<div class="row" style="justify-content:center;" > <h3>Client Information</h3></div>
+
+
+<script>
+
+$(document).ready(function(){
+    $('#id_customer_type').change(function () {
+        var changedto = $(this).val();
+        if(changedto==='PRSN') {
+            document.getElementById("id_number_of_employees").value=null;
+            document.getElementById("id_number_of_employees").disabled = true;
+            document.getElementById("id_employees_accounts").value=null;
+            document.getElementById("id_employees_accounts").disabled = true;
+        }
+        else{
+            document.getElementById("id_number_of_employees").disabled = false;
+            document.getElementById("id_employees_accounts").disabled = false
+        }
+    });
+});
+
+
+
+</script>
+
+
+<form enctype="multipart/form-data" method="post">
+    {% csrf_token %}
+    <select class="js-data-example-ajax" id="select22" style="width: 220px"></select>
+    {{ add_customer.name|as_crispy_field }}
+    {{ add_customer.logo|as_crispy_field }}
+    {{ add_customer.user|as_crispy_field }}
+    {{ add_customer.customer_type|as_crispy_field }}
+    {{ add_customer.number_of_employees|as_crispy_field }}
+    {{ add_customer.employees_accounts|as_crispy_field }}
+    {{ add_customer.active_ind|as_crispy_field }}
+
+
+{#    {{ add_customer|crispy }}#}
+{#    {% bootstrap_form add_customer %}#}
+{#        {{ add_product|crispy }}#}
+{#    {% buttons %}#}
+
+        <button type="submit" name="save" class="btn btn-success">Save</button>
+        <button type="reset" name="reset" class="btn btn-info">Reset</button>
+
+{#        //TODO:change it to main page for admin user#}
+
+        <a class="btn btn-danger" href="{% url 'home-staff' %}">Cancel</a>
+{#        <button type="button" name="cancel" class="btn btn-danger">Cancel</button>#}
+{#        {% buttons reset="Cancel" %}{% endbuttons %}#}
+{#    {% endbuttons %}#}
+</form>
+
+{% endblock %}

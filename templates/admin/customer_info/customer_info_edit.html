@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{#{% load bootstrap4 %}#}
+{% load crispy_forms_tags %}
+
+{% block block_title %}
+    <title>Edit Client</title>
+{% endblock %}
+{% block above_container %}
+{#<h5 class="text-info"> Welcome : <span class="text-dark">{{ user.first_name }}</span></h5>#}
+{% endblock %}
+{% block body_block %}
+<form enctype="multipart/form-data" method="post">
+    {% csrf_token %}
+{#    <img class="img-responsive img-rounded" src="{{ MEDIA_URL }}{{ form.logo.url }}">#}
+{#    <img class="img-responsive img-rounded" src="{{ ext.profile_pic.url }}">#}
+{#    <img class="img-responsive img-rounded" src="{{ MEDIA_URL }}{{ user.ext.profile_pic.url }}">#}
+{#    <p>hello</p>#}
+{#    <p>{{ MEDIA_URL }}</p>#}
+{#    <p>{{ MEDIA_URL }}{{ form.logo.url }}</p>#}
+{#    <p>{{ form.logo }}</p>#}
+
+
+{#    {{ form.logo|as_crispy_field }}#}
+    {{ form|crispy }}
+{#    <input type="submit" value="Update">#}
+{#    <input type="reset" value="Reset">#}
+          <button type="submit" name="save" class="btn btn-success">Save Updates</button>
+
+{#          <button type="reset" name="reset" class="btn btn-info">Reset</button>#}
+
+          <a class="btn btn-danger" href="{% url 'home-staff' %}">Cancel</a>
+
+</form>
+
+
+
+
+{% endblock %}

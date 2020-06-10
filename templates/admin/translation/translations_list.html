@@ -1,0 +1,66 @@
+
+{% extends 'base.html' %}
+
+{#{% load bootstrap4 %}#}
+
+{% block block_title %}
+    <title>Home Page</title>
+{% endblock %}
+
+
+
+{% block above_container %}
+{#<h5 class="text-info"> Welcome : <span class="text-dark">{{ user.first_name }}</span></h5>#}
+{% endblock %}
+{% block body_block %}
+
+<a class="btn btn-info" href="{% url 'translation_export' %}">Export Translations</a>
+
+    <hr style="border-top: 1px solid #8c8b8b;">
+<div class="row" style="justify-content:center;" > <h3>Translation History </h3></div>
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>Source</th>
+      <th>Destination</th>
+      <th>By User</th>
+      <th>Created Date</th>
+      <th>Client</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for text in translations %}
+      <tr>
+        <td class="col-sm-3 hideContent">{{ text.to_translate }} </td>
+        <td class="col-sm-3 hideContent">{{ text.translated }}</td>
+        <td class="col-sm-1">{{ text.created_by }}</td>
+        <td class="col-sm-3">{{ text.created_date }}</td>
+        <td class="col-sm-2">{{ text.client }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<nav>
+
+{% if is_paginated %}
+  <ul class="pagination">
+    {% if page_obj.has_previous %}
+      <li class="page-item"><a class="page-link" aria-label="Previous" href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+{#    {% else %}#}
+{#      <li class="disabled page-item"><span>&laquo;</span></li>#}
+    {% endif %}
+    {% for i in paginator.page_range %}
+      {% if page_obj.number == i %}
+        <li class="active page-item"><span class="page-link">{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li class="page-item"><a class="page-link" aria-label="Previous" href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if page_obj.has_next %}
+      <li class="page-item"><a class="page-link" aria-label="Previous" href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+    {% endif %}
+  </ul>
+{% endif %}
+</nav>
+{% endblock %}

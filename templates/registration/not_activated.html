@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{#{% load bootstrap4 %}#}
+{% load crispy_forms_tags %}
+{% block block_title %}
+
+    <title>{{ page_title }}</title>
+{% endblock %}
+
+{% block body_block %}
+{#<h2 class="page-header" style="color: #64c0b6">Login Here</h2>#}
+    <div class="row ">
+        <div class="card col-md-12">
+            <div class="card-header">
+            <h4 class="text-danger">{{ error_title }} !</h4>
+            </div>
+            <div class="card-body">
+{#                <h4 class="card-title">Ugg Boots</h4>#}
+                <p class="card-text">{{ error }}</p>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}
+

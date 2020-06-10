@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+
+{#{% load bootstrap4 %}#}
+{% load crispy_forms_tags %}
+
+{% block block_title %}
+    <title>Customer Detail</title>
+{% endblock %}
+
+{% block body_block%}
+
+    <h3 class="page-header text-info">
+                <a class="text-info" href="{% url 'home-staff' %}">Clients</a>
+/ <span style="color: #636363">{{ customer.name }}</span>
+
+    </h3>
+{#    {{ customer|crispy }}#}
+    <div class="row">
+        {% if customer.logo %}
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <a href="{{ MEDIA_URL }}{{ customer.logo.url }}">
+                    <img class="img-responsive img-rounded" src="{{ MEDIA_URL }}{{ customer.logo.url }}">
+                </a>
+            </div>
+            <div class="col-md-3"></div>
+        {% else %}
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                {% with "/static/img/ureed_logo.png" as not_found %}
+                     <img class="img-responsive img-rounded"
+                          src="{{ not_found }}" alt="Ureed - image not found">
+                {% endwith %}
+            </div>
+            <div class="col-md-3"></div>
+        {% endif %}
+    </div><br/>
+    <div class="row text-center">
+        {{ bootstrap_field }}
+{#        <h5 class="text-primary">Client : &nbsp;&nbsp;</h5>#}
+{##}
+{#        <h5 class="text">{{ customer.name }}</h5>#}
+
+
+
+            <div class="col-md-3">
+
+            </div>
+
+
+
+            <div class="col-md-6">
+                {% if user.ext.profile_pic %}
+                    <div class="row">
+                        <img class="img-circle center-block" src="{{ MEDIA_URL }}{{ user.ext.profile_pic.url }}" width="150px" height="150px">
+                    </div>
+                {% endif %}
+                <br/>
+
+{#                <div class="row panel"> #}
+{#                    <h4 class="text-primary align-center">Client:  <span class="text-dark">{{ customer.name }}</span></h4> #}
+{#                </div> #}
+
+                <div class="row panel">
+                    <h4 class="text-primary">Client Name:  <span class="text-dark">{{ customer.name }}</span></h4>
+                </div>
+
+                <div class="row panel">
+                    <h4 class="text-primary">Main User:  <span class="text-dark"> {{ customer.user }} </span></h4>
+                </div>
+
+                <div class="row panel">
+                <h4 class="text-primary">Assigned Employees:
+                    {% for i in customer.employees_accounts.all %}
+                        <span class="text-dark"> {{ i.username }} </span>,
+                    {% endfor %}
+                </h4>
+                </div>
+
+{#                <div class="row panel">#}
+{#                    <h4 class="text-primary">Client type:  <span class="text-dark">{{ customer.get_customer_type_display }}</span></h4>#}
+{#                </div>#}
+                <div class="row panel">
+                    <h4 class="text-primary">Active:  <span class="text-dark">{{ customer.active_ind }}</span></h4>
+                </div>
+
+        {#                <div class="row panel">#}
+        {#                    <h4 class="text-primary"> Expiration: <span class="text-primary">{{ customer.expiration }}</span></h4>#}
+        {#                </div>#}
+
+
+
+            <div class="col-md-3">
+
+            </div>
+
+                <div class="row">
+
+{#                    <div class="col-md-4">#}
+{#                        {% if features %}#}
+{#                            <a href="{% url 'features_edit' pk=features.id %}"><button class="btn btn-primary" >Manage Features</button></a>#}
+{#                        {% else %}#}
+{#                            <a href="{% url 'features_create' customer=customer.id %}"><button class="btn btn-primary" >Add Features</button></a>#}
+{#                        {% endif %}#}
+{#                    </div>#}
+                    <div class="col-md-4">
+                        <a href="{% url 'edit_customer' pk=customer.id %}"><button class="btn btn-primary" >Edit Client</button></a>
+                    </div>
+{##}
+{#                    <div class="col-md-4">#}
+{#                        <a href="{% url 'password_reset' %}"><button class="btn btn-primary" >Change Password</button></a>#}
+{#                    </div>#}
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+{#    <br/>#}
+{#    <div class="panel">#}
+{#        <div class="container">#}
+{#            {{ customer.name }}#}
+{#            {{ customer.name }}#}
+{#        </div>#}
+{#    </div>#}
+
+{#        <a href="{% url 'detail_customer' pk=customer.pk %}">Next</a>#}
+{##}
+{#<hr>#}
+
+{#    <a class="btn btn-success" href="{% url 'admin_app:add_comment_to_post' pk=product.pk %}">Add comment</a>#}
+
+{% endblock %}
