@@ -190,10 +190,10 @@ AUTHENTICATION_BACKENDS = (
 
 # LEXICAl_TRANSLATION_ENDPOINT = os.environ.get("MACHINE_TRANSLATION_ENDPOINT", "http://localhost:7777/translate")
 
-# SEGMENTATION_ENDPOINT_ar = os.environ.get("SEGMENTATION_ENDPOINT_AR", "http://127.0.0.1:1200/api/segmented_translation")
-SEGMENTATION_ENDPOINT_ar = os.environ.get("SEGMENTATION_ENDPOINT_AR", "http://3.80.140.245:1200/api/segmented_translation")
-# SEGMENTATION_ENDPOINT_en = os.environ.get("SEGMENTATION_ENDPOINT_EN", "http://127.0.0.1:1300/api/segmented_translation")
-SEGMENTATION_ENDPOINT_en = os.environ.get("SEGMENTATION_ENDPOINT_EN", "http://3.80.140.245:1300/api/segmented_translation")
+SEGMENTATION_ENDPOINT_ar = os.environ.get("SEGMENTATION_ENDPOINT_AR", "http://127.0.0.1:1200/api/segmented_translation")
+# SEGMENTATION_ENDPOINT_ar = os.environ.get("SEGMENTATION_ENDPOINT_AR", "http://3.80.140.245:1200/api/segmented_translation")
+SEGMENTATION_ENDPOINT_en = os.environ.get("SEGMENTATION_ENDPOINT_EN", "http://127.0.0.1:1300/api/segmented_translation")
+# SEGMENTATION_ENDPOINT_en = os.environ.get("SEGMENTATION_ENDPOINT_EN", "http://3.80.140.245:1300/api/segmented_translation")
 # SEGMENTATION_ENDPOINT = os.environ.get("SEGMENTATION_ENDPOINT", "http://127.0.0.1:1200/api/segmented_translation")
 MT_ENDPOINT_AR_EN = os.environ.get("MT_ENDPOINT_AR_EN", "http://172.31.92.25:7777/translate")
 # 100.26.183.142:7777/translate?sentence=اختبار
