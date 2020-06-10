@@ -3,7 +3,7 @@ import xml.etree.ElementTree as ET
 from tqdm import tqdm
 import requests
 from mt_final.celery import app
-from mt_final.settings import SEGMENTATION_ENDPOINT_en
+from django.conf import settings
 from translation.models import FileTranslation
 from pusher import Pusher
 
@@ -24,7 +24,7 @@ def translate_ureed(source):
 
     source = remove_html_tags(source)
     print(source)
-    url = SEGMENTATION_ENDPOINT_en
+    url = settings.SEGMENTATION_ENDPOINT_en
     # url = "http://127.0.0.1:1200/api/segmented_translation"
     querystring = {"type": 's', "key": 'PPAS1HtVz13Y4q9xoJ0ooy6lr1543QmWvZM7Z690', "text": source}
     response = requests.request("POST", url, json=querystring)

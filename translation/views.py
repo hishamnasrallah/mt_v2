@@ -28,7 +28,7 @@ from django.utils import timezone
 from django.views.generic import DetailView, CreateView, UpdateView, DeleteView, RedirectView, TemplateView, View, \
     ListView
 
-from mt_final.settings import MEDIA_ROOT, SEGMENTATION_ENDPOINT_ar, SEGMENTATION_ENDPOINT_en, MT_ENDPOINT_AR_EN, MT_ENDPOINT_EN_AR
+from django.conf import settings
 from translation.forms import CustomerForm, TranslationForm, ManageFeatureForm, UserForm, CustomerSubscribeForm
 from translation.models import CustomerInfo, ManageFeature, TranslationHistory, TranslationDestinationPref, \
     CustomerSubscription, FileTranslation
@@ -326,7 +326,7 @@ class LexicalTranslationAPIView(APIView):
                         translated = ''
                         # print(request)
                         to_translate = request.data['enu_text']
-                        url = SEGMENTATION_ENDPOINT_en  # old
+                        url = settings.SEGMENTATION_ENDPOINT_en  # old
 
                         # url = "http://localhost:7078/api/segmented_translation"
 
@@ -793,7 +793,7 @@ class MTTranslateAPIViewTMSlUse(APIView):
                 ar = False
                 en = False
                 if _source in ['ara', 'ar', 'ARA', 'AR']:
-                    mt_url = MT_ENDPOINT_AR_EN
+                    mt_url = settings.MT_ENDPOINT_AR_EN
                     ar = True
                     headers = {
                         'x-api-key': customer_obj.aws_gw_token,
@@ -804,7 +804,7 @@ class MTTranslateAPIViewTMSlUse(APIView):
                     print(response.json().get("target_text")[0][1])
 
                 elif _source in ['enu', 'en', 'ENU', 'EN']:
-                    mt_url = MT_ENDPOINT_EN_AR
+                    mt_url = settings.MT_ENDPOINT_EN_AR
                     en = True
                     headers = {
                         'x-api-key': customer_obj.aws_gw_token,
@@ -937,7 +937,7 @@ class MTTranslateAPIView(APIView):
                 ar = False
                 en = False
                 if _source in ['ara', 'ar', 'ARA', 'AR']:
-                    mt_url = SEGMENTATION_ENDPOINT_ar
+                    mt_url = settings.SEGMENTATION_ENDPOINT_ar
 
                     ar = True
                     querystring = {"type": 's', "key": customer_obj.aws_gw_token, "text": to_translate}
@@ -946,7 +946,7 @@ class MTTranslateAPIView(APIView):
                     print(response.json().get("translation"))
 
                 elif _source in ['enu', 'en', 'ENU', 'EN']:
-                    mt_url = SEGMENTATION_ENDPOINT_en
+                    mt_url = settings.SEGMENTATION_ENDPOINT_en
                     en = True
                     querystring = {"type": 's', "key": customer_obj.aws_gw_token, "text": to_translate}
 

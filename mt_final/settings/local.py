@@ -127,10 +127,10 @@ DATABASES = {
 
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'hishamapp5',
+        'NAME': 'mt',
         'USER': 'postgres',
-        'PASSWORD': 'AMw3N$129#$',
-        'HOST': 'mt.cnp7tmhwgmei.us-east-1.rds.amazonaws.com',
+        'PASSWORD': 'Amman123',
+        'HOST': '172.17.0.1',
         'PORT': 5432,
     }
 }
@@ -255,4 +255,5 @@ LOGIN_URL = FORCE_SCRIPT_NAME + '/accounts/login/'
 #         # },
 #     },
 # }
+
 
