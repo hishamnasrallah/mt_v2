@@ -326,7 +326,7 @@ class LexicalTranslationAPIView(APIView):
                         translated = ''
                         # print(request)
                         to_translate = request.data['enu_text']
-                        url = settings.SEGMENTATION_ENDPOINT_en  # old
+                        url = settings.SEGMENTATION_ENDPOINT_EN  # old
 
                         # url = "http://localhost:7078/api/segmented_translation"
 
@@ -937,7 +937,7 @@ class MTTranslateAPIView(APIView):
                 ar = False
                 en = False
                 if _source in ['ara', 'ar', 'ARA', 'AR']:
-                    mt_url = settings.SEGMENTATION_ENDPOINT_ar
+                    mt_url = settings.SEGMENTATION_ENDPOINT_AR
 
                     ar = True
                     querystring = {"type": 's', "key": customer_obj.aws_gw_token, "text": to_translate}
@@ -946,7 +946,7 @@ class MTTranslateAPIView(APIView):
                     print(response.json().get("translation"))
 
                 elif _source in ['enu', 'en', 'ENU', 'EN']:
-                    mt_url = settings.SEGMENTATION_ENDPOINT_en
+                    mt_url = settings.SEGMENTATION_ENDPOINT_EN
                     en = True
                     querystring = {"type": 's', "key": customer_obj.aws_gw_token, "text": to_translate}
 
