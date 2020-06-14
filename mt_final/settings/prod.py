@@ -24,15 +24,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 SECRET_KEY = '*6+a5*zg(x2pgd1##n=0yeehpb$%#6*)fzr)frs0&o))emw#ux'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-CSRF_COOKIE_SECURE = True
-X_FRAME_OPTIONS = 'DENY'
-SESSION_COOKIE_SECURE = True
-SECURE_CONTENT_TYPE_NOSNIFF = True
-SECURE_BROWSER_XSS_FILTER = True
-SECURE_SSL_REDIRECT = True
+
 # Application definition
 
 INSTALLED_APPS = [

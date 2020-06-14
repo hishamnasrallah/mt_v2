@@ -255,4 +255,3 @@ LOGIN_URL = FORCE_SCRIPT_NAME + '/accounts/login/'
 #         # },
 #     },
 # }
-
