@@ -406,33 +406,33 @@
             mtooltip.innerHTML = "Copy to clipboard";
         }
 
-        function showDiv() {
-            // {#document.getElementById('translate').style.display = "none";#}
+        {#function showDiv() {#}
+        {#    // {#document.getElementById('translate').style.display = "none";#}
             {#document.getElementById('loader1').style.display = "block";#}
-            $('#exampleModal').modal('show');
-            // {#setTimeout(function () {#}
-            // {#    }, 2000);#}
-            var trans = $('#translate').val();
-            var trans_traget = $('#trans_target').val();
+        {#    $('#exampleModal').modal('show');#}
+        {#    // {#setTimeout(function () {#}
+        {#    // {#    }, 2000);#}
+        {#    var trans = $('#translate').val();#}
+        {#    var trans_traget = $('#trans_target').val();#}
             {#console.log(trans_traget)#}
-            var crf = document.getElementsByName('csrfmiddlewaretoken')[0].value;
-            $('#word').empty();
-
-            $.ajax({
-                type: 'POST',
-                url: "{% url 'words-translation' %}",
-                data: {enu_text: trans, csrfmiddlewaretoken: crf, source: trans_traget, slug: '{{ slug }}', user_id: '{{ user.id }}'},
-                dataType: "json",
-                success: function (resultData) {
-                    // console.log(res,'re here');
-
-                    var x = $('#word')
-                    for (var i in resultData.translation) {
-                        x.append('<li><span class="word">' + i + '</span> ( <span class="green-font">' + resultData.translation[i][0] + ' </span>) : ' + resultData.translation[i][1] + '</li>')
-                    }
-                }
-            });
-
+        {#    var crf = document.getElementsByName('csrfmiddlewaretoken')[0].value;#}
+        {#    $('#word').empty();#}
+        {##}
+        {#    $.ajax({#}
+        {#        type: 'POST',#}
+        {#        url: "{% url 'words-translation' %}",#}
+        {#        data: {enu_text: trans, csrfmiddlewaretoken: crf, source: trans_traget, slug: '{{ slug }}', user_id: '{{ user.id }}'},#}
+        {#        dataType: "json",#}
+        {#        success: function (resultData) {#}
+        {#            // console.log(res,'re here');#}
+        {##}
+        {#            var x = $('#word')#}
+        {#            for (var i in resultData.translation) {#}
+        {#                x.append('<li><span class="word">' + i + '</span> ( <span class="green-font">' + resultData.translation[i][0] + ' </span>) : ' + resultData.translation[i][1] + '</li>')#}
+        {#            }#}
+        {#        }#}
+        {#    });#}
+        {##}
             {#$.ajax({#}
             {#    type: 'POST',#}
             {#    url: "{% url 'mt-sentence' %}",#}
@@ -445,20 +445,83 @@
             {#        $('#exampleModal').modal('hide');#}
             {#    }#}
             {# });#}
+        {##}
+        {#    $.ajax({#}
+        {#        type: 'POST',#}
+        {#        url: "{% url 'mt-sentence' %}",#}
+        {#        data: {inputText: trans, csrfmiddlewaretoken: crf, source: trans_traget, slug: '{{ slug }}', user_id: '{{ user.id }}'},#}
+        {#        dataType: "json",#}
+        {#        success: function (resultData) {#}
+        {#            $('#copied-text').val(resultData.translatedText);#}
+        {##}
+        {#            $('#exampleModal').modal('hide');#}
+        {#            $('#exampleModal').modal('hide');#}
+        {#        }#}
+        {#    });#}
+        {# }#}
+    showDiv = function () {
+            //
+
+            $('#exampleModal').modal('show');
+            //
+            //
+            var trans = $('#translate').val();
+            var trans_traget = $('#trans_target').val();
+
+            var crf = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+            $('#word').empty();
+
+
 
             $.ajax({
                 type: 'POST',
-                url: "{% url 'mt-sentence' %}",
-                data: {inputText: trans, csrfmiddlewaretoken: crf, source: trans_traget, slug: '{{ slug }}', user_id: '{{ user.id }}'},
+                url: "/mt/translate/words/",
+                data: {enu_text: trans, csrfmiddlewaretoken: crf, source: trans_traget, slug: 'mosab', user_id: '2'},
+                dataType: "json",
+                success: function (resultData) {
+                    // console.log(res,'re here');
+
+
+
+                    var x = $('#word')
+                    for (var i in resultData.translation) {
+                        x.append('<li><span class="word">' + i + '</span> ( <span class="green-font">' + resultData.translation[i][0] + ' </span>) : ' + resultData.translation[i][1] + '</li>')
+                    }
+                }
+            });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            $.ajax({
+                type: 'POST',
+                url: "/mt/mt/translate/sentence/",
+                data: {inputText: trans, csrfmiddlewaretoken: crf, source: trans_traget, slug: 'mosab', user_id: '2'},
                 dataType: "json",
                 success: function (resultData) {
                     $('#copied-text').val(resultData.translatedText);
-
-                    $('#exampleModal').modal('hide');
-                    $('#exampleModal').modal('hide');
                 }
-            });
-        }
+            })
+            .always(function(){
+                    setTimeout(function(){
+                        $('#exampleModal').modal('hide');
+                    }, 1000);
+                });
+}
     </script>
 
 
